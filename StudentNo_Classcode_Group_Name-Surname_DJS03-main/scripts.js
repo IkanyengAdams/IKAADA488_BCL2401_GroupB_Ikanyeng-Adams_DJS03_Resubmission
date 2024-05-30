@@ -1,6 +1,11 @@
 import { books, authors, genres, BOOKS_PER_PAGE } from './data.js'
 
-
+class BookConnect {
+    constructor() {
+        this.page = 1;
+        this.matches = books;
+        this.initialize();
+    }
 
 
     initialize() {
@@ -33,7 +38,7 @@ createBookPreview({ author, id, image, title }) {
     return element;
 }
 
-bookPreviewsPopulation(booklist) {
+populateBookPreviews(bookList) {
     const fragment = document.createDocumentFragment();
     bookList.forEach(book => fragment.appendChild(this.createBookPreview(book)));
     document.querySelector('[data-list-items]').appendChild(fragment);
@@ -115,7 +120,7 @@ handleThemeChange(event) {
     document.querySelector('[data-settings-overlay]').open = false;
 }
 
-handleSearch() {
+handleSearch(event) {
     event.preventDefault();
     const formData = new FormData(event.target);
     const filters = Object.fromEntries(formData);
@@ -131,7 +136,7 @@ handleSearch() {
     }
 
     document.querySelector('[data-list-items]').innerHTML = '';
-    this.bookPreviewsPopulation(result.slice(0, BOOKS_PER_PAGE));
+    this.populateBookPreviews(result.slice(0, BOOKS_PER_PAGE));
     this.updateShowMoreButton();
     window.scrollTo({ top: 0, behavior: 'smooth' });
     document.querySelector('[data-search-overlay]').open = false;
@@ -188,6 +193,8 @@ showBookDetails(book) {
     }
 }
 
+// Initialize the application
+document.addEventListener('DOMContentLoaded', () => new BookConnect());
 
 
 
